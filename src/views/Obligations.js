@@ -18,6 +18,8 @@ const Obligations = () => {
     const [players, setPlayers] = useState([]);
     const [selectedObligation, setSelectedObligation] = useState([]);
     const [showCreateForm, setShowCreateForm] = useState(false);
+    const [showModifyForm, setShowModifyForm] = useState(false);
+
     const [formMessage, setFormMessage] = useState('');
     const [categoriesForm, setCategoriesForm] = useState([]);
     const [newObligation, setNewObligation] = useState({
@@ -124,6 +126,65 @@ const Obligations = () => {
                 setFormMessage(`Error: ${error.message}`);
             });
 
+    };
+
+    const handleModifyObligation = () => {
+        if (selectedObligation.length === 0) {
+            alert('Debes seleccionar al menos una obligacion.');
+        } else if (selectedObligation.length > 1) {
+            alert('Solo puedes modificar una Obligacion a la vez.');
+        } else {
+            const obligationToModify = obligations.find(obligation => obligation.id === selectedObligation[0]);
+
+            // Establecer el estado con los datos del evento en el formato adecuado
+            setNewObligation({
+                name: obligationToModify.name,
+                description: obligationToModify.description,
+                value: obligationToModify.value,  
+                maxDate: obligationToModify.maxDate, 
+                dateCreation:obligationToModify.dateCreation,
+                player:obligationToModify.player,
+
+            });
+
+            setShowModifyForm(true); // Abrir el formulario de modificación
+        }
+    };
+
+    const handleModifyObligationForm = (e) => {
+        e.preventDefault();
+        const ObligationId = selectedObligation[0];
+        const url = `http://localhost:8082/obligations/edit-obligation/${ObligationId}`;
+        const payload = {
+            ...newObligation,
+        };
+        fetch(url, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Obligacion Modificado satisfactoriamente.');
+                    setNewObligation({
+                        name: '',
+                        description: '',
+                        value: '',
+                        maxDate : '',
+                        dateCreation:'',
+                        player: '',
+                    });
+                    setShowModifyForm(false)
+                } else {
+                    alert('Obligacion no pudo ser modificado satisfactoriamente.');
+                    return response.json().then((data) => {
+                        throw new Error(data.message || 'Error al modificar el evento.');
+                    });
+                }
+            })
+            .catch(error => {
+                setFormMessage(`Error: ${error.message}`);
+            });
     };
 
     const handleCategoryChangeForm = async (e) => {
@@ -272,7 +333,7 @@ const Obligations = () => {
 
                     <MenuMiddle>
                         <MenuButton onClick={handleCreateObligation} buttonType="create">Crear Obligacion</MenuButton>
-                        <MenuButton onClick={null} buttonType="modify">Modificar Obligacion</MenuButton>
+                        <MenuButton onClick={handleModifyObligation} buttonType="modify">Modificar Obligacion</MenuButton>
                         <MenuButton onClick={null} buttonType="delete">Pagar Obligacion</MenuButton>
                     </MenuMiddle>
 
@@ -373,6 +434,61 @@ const Obligations = () => {
                                 <FormButtons>
                                     <Button onClick={handleCreateObligationForm}>Crear Evento</Button>
                                     <CancelButton onClick={() => setShowCreateForm(false)}>Cancelar</CancelButton>
+                                </FormButtons>
+
+                            </FormContainer>
+                        </FormOverlay>
+                    )}
+
+                     {/* Formulario de Editar Obligation */}
+                     {showModifyForm && (
+                        <FormOverlay>
+                            <FormContainer onClick={null}>
+                                <FormTitle>Editar Obligacion</FormTitle>
+
+                                <FormField>
+                                    <Label htmlFor="name">Nombre Obligacion:</Label>
+                                    <Input
+                                        type="name"
+                                        name="name"
+                                        value={newObligation.name}
+                                        onChange={handleFormChange}
+                                    />
+                                </FormField>
+
+                                <FormField>
+                                    <Label htmlFor="description">Descripcion :</Label>
+                                    <Input
+                                        type="description"
+                                        name="description"
+                                        value={newObligation.description}
+                                        onChange={handleFormChange}
+                                    />
+                                </FormField>
+
+                                <FormField>
+                                    <Label htmlFor="value">Valor :</Label>
+                                    <Input
+                                        type="value"
+                                        name="value"
+                                        value={newObligation.value}
+                                        onChange={handleFormChange}
+                                    />
+                                </FormField>
+
+                                <FormField>
+                                    <Label htmlFor="maxDate">Fecha de Pago</Label>
+                                    <Input
+                                        type="date"
+                                        name="maxDate"
+                                        value={newObligation.maxDate || ""}
+                                        onChange={handleFormChange}
+                                    />
+                                </FormField>
+
+                                <FormButtons>
+                                    <Button onClick={handleModifyObligationForm}>Editar Obligacion</Button>
+                                    <CancelButton onClick={() => setShowModifyForm(false)}>Cancelar</CancelButton>
                                 </FormButtons>
 
                             </FormContainer>

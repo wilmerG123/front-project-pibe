@@ -44,6 +44,7 @@ const ObligationsTable = ({ obligations, selectedObligation, setSelectedObligati
               </th>
               <th>Nombre Deuda</th>
               <th>Nombre Jugador</th>
+              <th>Estado</th>
             </tr>
           </thead>
           <tbody>
@@ -58,6 +59,7 @@ const ObligationsTable = ({ obligations, selectedObligation, setSelectedObligati
                 </td>
                 <td>{obligation.name}</td>
                 <td>{obligation.player?.name}</td>
+                <td>{obligation.status}</td>
               </tr>
             ))}
           </tbody>
