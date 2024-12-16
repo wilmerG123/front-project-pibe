@@ -19,7 +19,6 @@ const Obligations = () => {
     const [selectedObligation, setSelectedObligation] = useState([]);
     const [showCreateForm, setShowCreateForm] = useState(false);
     const [showModifyForm, setShowModifyForm] = useState(false);
-
     const [formMessage, setFormMessage] = useState('');
     const [categoriesForm, setCategoriesForm] = useState([]);
     const [newObligation, setNewObligation] = useState({
@@ -50,11 +49,11 @@ const Obligations = () => {
         if (filterType === 'categoria' && filterCategory) {
             const selectedCategory = categories.find(cat => cat.name === filterCategory);
             if (selectedCategory) {
-                url = `http://localhost:8082/obligations/get-all-obligations`;
+                url = `http://localhost:8082/obligations/get-by-category/${selectedCategory.id}`;
             }
 
-        } else if(filterType === 'nombre') {
-            url = 'http://localhost:8082/obligations/get-all-obligations';
+        } else if (filterType === 'nombre' && searchQuery) {
+            url = `http://localhost:8082/obligations/get-by-player-name/${searchQuery}`;
         } 
         
         else if (filterType === 'todos') {
@@ -136,7 +135,7 @@ const Obligations = () => {
         } else {
             const obligationToModify = obligations.find(obligation => obligation.id === selectedObligation[0]);
 
-            // Establecer el estado con los datos del evento en el formato adecuado
+            // Establecer el estado con los datos del obligacion en el formato adecuado
             setNewObligation({
                 name: obligationToModify.name,
                 description: obligationToModify.description,
@@ -178,7 +177,7 @@ const Obligations = () => {
                 } else {
                     alert('Obligacion no pudo ser modificado satisfactoriamente.');
                     return response.json().then((data) => {
-                        throw new Error(data.message || 'Error al modificar el evento.');
+                        throw new Error(data.message || 'Error al modificar el obligacion.');
                     });
                 }
             })
@@ -186,6 +185,78 @@ const Obligations = () => {
                 setFormMessage(`Error: ${error.message}`);
             });
     };
+
+    const handleCancelledObligation = async (e) => {
+
+        // Validar si no hay ninguna obligación seleccionada
+        if (selectedObligation.length === 0) {
+            alert("Por favor, selecciona al menos una obligación.");
+            return;
+        }
+    
+        // Validar si hay más de una obligación seleccionada
+        if (selectedObligation.length > 1) {
+            alert("Solo se puede pagar una obligación a la vez.");
+            return;
+        }
+    
+        // Obtener el id de la obligación seleccionada
+        const obligationId = selectedObligation[0];
+    
+        try {
+            // Consultar la obligación completa desde el backend
+            const obligationResponse = await fetch(`http://localhost:8082/obligations/get-obligations/${obligationId}`);
+    
+            if (!obligationResponse.ok) {
+                // Si la respuesta no es exitosa, mostrar un mensaje de error
+                alert("Error al obtener la obligación. Por favor, intente nuevamente.");
+                return;
+            }
+    
+            // Obtener la obligación desde la respuesta
+            const obligationData = await obligationResponse.json();
+    
+            // Validar si la obligación existe
+            if (!obligationData || !obligationData.id) {
+                alert("La obligación seleccionada no existe o no es válida.");
+                return;
+            }
+        
+            // Ahora que tenemos el objeto completo de la obligación, proceder con la solicitud de pago
+            const paymentResponse = await fetch("http://localhost:8082/pago/create-pago", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(obligationData)  // Enviar la obligación completa como JSON
+            });
+    
+            // Validar la respuesta del servidor
+            if (paymentResponse.ok) {
+                // El servidor ha devuelto el documento PDF
+                const blob = await paymentResponse.blob();  // Obtener el contenido como blob (PDF)
+    
+                // Crear un enlace para descargar el archivo
+                const link = document.createElement("a");
+                const url = window.URL.createObjectURL(blob);
+                link.href = url;
+                link.download = "pago_cancelado.pdf";  // Puedes darle el nombre que desees
+                link.click();  // Hacer clic en el enlace para iniciar la descarga
+                alert('Pago hecho satisfactoriamente.');
+                // Liberar el objeto URL creado
+                window.URL.revokeObjectURL(url);
+                setObligations(prevObligations => prevObligations.filter(obligation => obligation.id !== obligationId));
+            } else {
+                // Si la respuesta del pago no es exitosa, mostrar un mensaje de error
+                alert("Error al procesar el pago. Por favor, intente de nuevo.");
+            }
+        } catch (error) {
+            // Manejo de errores en caso de problemas con la solicitud
+            console.error("Error de conexión:", error);
+            alert("Hubo un error al procesar la solicitud. Por favor, intente más tarde.");
+        }
+    };
+    
 
     const handleCategoryChangeForm = async (e) => {
         // Extraemos los IDs de las categorías seleccionadas
@@ -334,7 +405,7 @@ const Obligations = () => {
                     <MenuMiddle>
                         <MenuButton onClick={handleCreateObligation} buttonType="create">Crear Obligacion</MenuButton>
                         <MenuButton onClick={handleModifyObligation} buttonType="modify">Modificar Obligacion</MenuButton>
-                        <MenuButton onClick={null} buttonType="delete">Pagar Obligacion</MenuButton>
+                        <MenuButton onClick={handleCancelledObligation} buttonType="delmodifyete">Pagar Obligacion</MenuButton>
                     </MenuMiddle>
 
                     {!isLoading && !noResults && obligations.length > 0 && (
@@ -432,7 +503,7 @@ const Obligations = () => {
                                 </FormField>
 
                                 <FormButtons>
-                                    <Button onClick={handleCreateObligationForm}>Crear Evento</Button>
+                                    <Button onClick={handleCreateObligationForm}>Crear Obligacion</Button>
                                     <CancelButton onClick={() => setShowCreateForm(false)}>Cancelar</CancelButton>
                                 </FormButtons>
 
