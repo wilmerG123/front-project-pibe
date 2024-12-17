@@ -61,7 +61,6 @@ const App = () => {
 
     try {
       const apiUrl = process.env.REACT_APP_API_LOGIN;
-      console.log("API URL:", apiUrl);  // Verifica si la URL es correcta
       const response = await fetch(`${apiUrl}/auth/login`, {
         method: 'POST',
         headers: {

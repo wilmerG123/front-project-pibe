@@ -28,6 +28,9 @@ const Events = () => {
         categories: [],
     });
 
+    const apiUrlMain = process.env.REACT_APP_API_MAIN;
+
+
     const handleCategoryChangeForm = (e) => {
         // Extraemos los IDs de las categorías seleccionadas
         const selectedCategoryIds = Array.from(e.target.selectedOptions, option => option.value);
@@ -46,7 +49,7 @@ const Events = () => {
 
     const handleCreateEventForm = (e) => {
         e.preventDefault();
-        const url = 'http://localhost:8081/events/create-event';
+        const url = `${apiUrlMain}/events/create-event`;
         const payload = {
             ...newEvent,
         };
@@ -78,7 +81,7 @@ const Events = () => {
     const handleModifyEventForm = (e) => {
         e.preventDefault();
         const eventId = selectedEvent[0];
-        const url = `http://localhost:8081/events/edit-event/${eventId}`;
+        const url = `${apiUrlMain}/events/edit-event/${eventId}`;
         const payload = {
             ...newEvent,
         };
@@ -169,10 +172,10 @@ const Events = () => {
         if (filterType === 'categoria' && filterCategory) {
             const selectedCategory = categories.find(cat => cat.name === filterCategory);
             if (selectedCategory) {
-                url = `http://localhost:8081/events/get-events-by-category/${selectedCategory.id}`;
+                url = `${apiUrlMain}/events/get-events-by-category/${selectedCategory.id}`;
             }
         } else if (filterType === 'todos') {
-            url = 'http://localhost:8081/events/get-all-event';
+            url = `${apiUrlMain}/events/get-all-event`;
         }
 
         if (url) {
@@ -204,7 +207,7 @@ const Events = () => {
 
             if (confirmDelete) {
                 // Hacer la solicitud DELETE al servidor si el usuario confirma
-                fetch(`http://localhost:8081/events/closed-event/${eventId}`, {
+                fetch(`${apiUrlMain}/events/closed-event/${eventId}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json'
@@ -257,7 +260,7 @@ const Events = () => {
 
     useEffect(() => {
         setCategoriesLoading(true);
-        fetch('http://localhost:8081/utils/get-all-categories')
+        fetch(`${apiUrlMain}/utils/get-all-categories`)
             .then(response => response.json())
             .then(data => {
                 setCategories(data);
@@ -268,7 +271,7 @@ const Events = () => {
                 setCategoriesLoading(false);
             });
         setCanchasLoading(true);
-        fetch('http://localhost:8081/utils/get-all-canchas')
+        fetch(`${apiUrlMain}/utils/get-all-canchas`)
             .then(response => response.json())
             .then(data => {
                 setCanchas(data);

@@ -29,6 +29,8 @@ const Obligations = () => {
         players: [],
     });
 
+    const apiUrlObligations = process.env.REACT_APP_API_OBLIGATIONS;
+    const apiUrlMain = process.env.REACT_APP_API_MAIN;
 
     const handleSearchChange = (e) => setSearchQuery(e.target.value);
 
@@ -49,15 +51,15 @@ const Obligations = () => {
         if (filterType === 'categoria' && filterCategory) {
             const selectedCategory = categories.find(cat => cat.name === filterCategory);
             if (selectedCategory) {
-                url = `http://localhost:8082/obligations/get-by-category/${selectedCategory.id}`;
+                url = `${apiUrlObligations}/obligations/get-by-category/${selectedCategory.id}`;
             }
 
         } else if (filterType === 'nombre' && searchQuery) {
-            url = `http://localhost:8082/obligations/get-by-player-name/${searchQuery}`;
+            url = `${apiUrlObligations}/obligations/get-by-player-name/${searchQuery}`;
         } 
         
         else if (filterType === 'todos') {
-            url = 'http://localhost:8082/obligations/get-all-obligations';
+            url = `${apiUrlObligations}/obligations/get-all-obligations`;
         }
 
         if (url) {
@@ -95,7 +97,7 @@ const Obligations = () => {
 
     const handleCreateObligationForm = (e) => {
         e.preventDefault();
-        const url = 'http://localhost:8082/obligations/create-obligation';
+        const url = `${apiUrlObligations}/obligations/create-obligation`;
         const payload = {
             ...newObligation,
         };
@@ -153,7 +155,7 @@ const Obligations = () => {
     const handleModifyObligationForm = (e) => {
         e.preventDefault();
         const ObligationId = selectedObligation[0];
-        const url = `http://localhost:8082/obligations/edit-obligation/${ObligationId}`;
+        const url = `${apiUrlObligations}/obligations/edit-obligation/${ObligationId}`;
         const payload = {
             ...newObligation,
         };
@@ -205,7 +207,7 @@ const Obligations = () => {
     
         try {
             // Consultar la obligación completa desde el backend
-            const obligationResponse = await fetch(`http://localhost:8082/obligations/get-obligations/${obligationId}`);
+            const obligationResponse = await fetch(`${apiUrlObligations}/obligations/get-obligations/${obligationId}`);
     
             if (!obligationResponse.ok) {
                 // Si la respuesta no es exitosa, mostrar un mensaje de error
@@ -223,7 +225,7 @@ const Obligations = () => {
             }
         
             // Ahora que tenemos el objeto completo de la obligación, proceder con la solicitud de pago
-            const paymentResponse = await fetch("http://localhost:8082/pago/create-pago", {
+            const paymentResponse = await fetch(`${apiUrlObligations}/pago/create-pago`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -275,7 +277,7 @@ const Obligations = () => {
 
         // Hacer la solicitud a la API para obtener los jugadores de las categorías seleccionadas
     try {
-        const response = await fetch(`http://localhost:8081/player/get-player-from-categories/${selectedCategoryIds.join(',')}`);
+        const response = await fetch(`${apiUrlMain}/player/get-player-from-categories/${selectedCategoryIds.join(',')}`);
         const data = await response.json();
 
         // Si la respuesta tiene jugadores, actualizamos el estado de filteredPlayers
@@ -322,7 +324,7 @@ const Obligations = () => {
 
     useEffect(() => {
         setCategoriesLoading(true);
-        fetch('http://localhost:8081/utils/get-all-categories')
+        fetch(`${apiUrlObligations}/utils/get-all-categories`)
             .then(response => response.json())
             .then(data => {
                 setCategories(data);

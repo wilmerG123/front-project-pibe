@@ -44,7 +44,8 @@ const Players = () => {
     const [selectedPlayer, setSelectedPlayer] = useState([]);
     const [formMessage, setFormMessage] = useState('');
 
-
+    const apiUrlMain = process.env.REACT_APP_API_MAIN;
+    
     const handleSearchChange = (e) => setSearchQuery(e.target.value);
 
     const handleFilterChange = (e) => {
@@ -98,14 +99,14 @@ const Players = () => {
         let url = '';
 
         if (filterType === 'nombre' && searchQuery) {
-            url = `http://localhost:8081/player/get-players-name/${searchQuery}`;
+            url = `${apiUrlMain}/player/get-players-name/${searchQuery}`;
         } else if (filterType === 'categoria' && filterCategory) {
             const selectedCategory = categories.find(cat => cat.name === filterCategory);
             if (selectedCategory) {
-                url = `http://localhost:8081/player/get-players-category/${selectedCategory.id}`;
+                url = `${apiUrlMain}/player/get-players-category/${selectedCategory.id}`;
             }
         } else if (filterType === 'todos') {
-            url = 'http://localhost:8081/player/get-all-player';
+            url = `${apiUrlMain}/player/get-all-player`;
         }
 
         if (url) {
@@ -126,7 +127,7 @@ const Players = () => {
 
     useEffect(() => {
         setCategoriesLoading(true);
-        fetch('http://localhost:8081/utils/get-all-categories')
+        fetch(`${apiUrlMain}/utils/get-all-categories`)
             .then(response => response.json())
             .then(data => {
                 setCategories(data);
@@ -137,7 +138,7 @@ const Players = () => {
                 setCategoriesLoading(false);
             });
         setCitiesLoading(true);
-        fetch('http://localhost:8081/utils/get-all-cities')
+        fetch(`${apiUrlMain}/utils/get-all-cities`)
             .then(response => response.json())
             .then(data => {
                 setCities(data);
@@ -203,7 +204,7 @@ const Players = () => {
 
             if (confirmDelete) {
                 // Hacer la solicitud DELETE al servidor si el usuario confirma
-                fetch(`http://localhost:8081/player/delete-player/${playerId}`, {
+                fetch(`${apiUrlMain}/player/delete-player/${playerId}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json'
@@ -232,7 +233,7 @@ const Players = () => {
 
     const handleCreatePlayer = (e) => {
         e.preventDefault();
-        const url = 'http://localhost:8081/player/create-player';
+        const url = `${apiUrlMain}/player/create-player`;
         const payload = {
             ...newPlayer,
             category: newPlayer.category ? { id: newPlayer.category.id } : null,
@@ -271,7 +272,7 @@ const Players = () => {
     // Función para manejar la actualización del jugador seleccionado
     const handleModifyPlayer = (e) => {
         const playerId = selectedPlayer[0];
-        const url = `http://localhost:8081/player/edit-player/${playerId}`;
+        const url = `${apiUrlMain}/player/edit-player/${playerId}`;
         const payload = { ...newPlayer };
 
         fetch(url, {

@@ -77,6 +77,8 @@ const Utils = () => {
     const [showModifyDepartment, setShowModifyDepartment] = useState(false);
     const [showModifyCountry, setShowModifyCountry] = useState(false);
 
+    const apiUrlMain = process.env.REACT_APP_API_MAIN;
+
     // Handle filter change
     const handleFilterChange = (e) => {
         setFilterType(e.target.value);
@@ -125,7 +127,7 @@ const Utils = () => {
             }));
             setDepartmentsform([])
             // Construir la URL solo cuando `selectedItem.id` es válido
-            const url = `http://localhost:8081/utils/get-all-departments-by-country/${selectedItem.id}`;
+            const url = `${apiUrlMain}/utils/get-all-departments-by-country/${selectedItem.id}`;
 
             // Realizar la solicitud solo si la URL es válida
             if (url) {
@@ -225,7 +227,7 @@ const Utils = () => {
             }})
             setNoResults(false);
             setCountrys([]);
-            let url = 'http://localhost:8081/utils/get-all-countries';
+            let url = `${apiUrlMain}/utils/get-all-countries`;
             if (url) {
                 fetch(url)
                     .then(response => response.json())
@@ -241,7 +243,7 @@ const Utils = () => {
         } else if (selectedFilterType === 'Departamento') {
             setNoResults(false);
             setCountrysForm([]);
-            let url = 'http://localhost:8081/utils/get-all-countries';
+            let url = `${apiUrlMain}/utils/get-all-countries`;
             if (url) {
                 fetch(url)
                     .then(response => response.json())
@@ -307,7 +309,7 @@ const Utils = () => {
             });
             setNoResults(false);
             setCountrys([]);
-            let url = 'http://localhost:8081/utils/get-all-countries';
+            let url = `${apiUrlMain}/utils/get-all-countries`;
             if (url) {
                 fetch(url)
                     .then(response => response.json())
@@ -337,7 +339,7 @@ const Utils = () => {
             });
             setNoResults(false);
             setCountrys([]);
-            let url = 'http://localhost:8081/utils/get-all-countries';
+            let url = `${apiUrlMain}/utils/get-all-countries`;
             if (url) {
                 fetch(url)
                     .then(response => response.json())
@@ -454,7 +456,7 @@ const Utils = () => {
         setIsLoading(true);
         setNoResults(false);
         setCategories([]);
-        let url = 'http://localhost:8081/utils/get-all-categories';
+        let url = `${apiUrlMain}/utils/get-all-categories`;
 
         if (url) {
             fetch(url)
@@ -475,7 +477,7 @@ const Utils = () => {
         setIsLoading(true);
         setNoResults(false);
         setCitys([]);
-        let url = 'http://localhost:8081/utils/get-all-cities';
+        let url = `${apiUrlMain}/utils/get-all-cities`;
 
         if (url) {
             fetch(url)
@@ -496,7 +498,7 @@ const Utils = () => {
         setIsLoading(true);
         setNoResults(false);
         setCountrys([]);
-        let url = 'http://localhost:8081/utils/get-all-countries';
+        let url = `${apiUrlMain}/utils/get-all-countries`;
         if (url) {
             fetch(url)
                 .then(response => response.json())
@@ -516,7 +518,7 @@ const Utils = () => {
         setIsLoading(true);
         setNoResults(false);
         setDepartments([]);
-        let url = 'http://localhost:8081/utils/get-all-departments';
+        let url = `${apiUrlMain}/utils/get-all-departments`;
         if (url) {
             fetch(url)
                 .then(response => response.json())
@@ -537,7 +539,7 @@ const Utils = () => {
         setIsLoading(true);
         setNoResults(false);
         setCanchas([]);
-        let url = 'http://localhost:8081/utils/get-all-canchas';
+        let url = `${apiUrlMain}/utils/get-all-canchas`;
         if (url) {
             fetch(url)
                 .then(response => response.json())
@@ -554,7 +556,7 @@ const Utils = () => {
     };
 
     const handleCreateCategory = () => {
-        const url = 'http://localhost:8081/utils/create-category';
+        const url = `${apiUrlMain}/utils/create-category`;
         const payload = {
             ...newCategory
         };
@@ -584,7 +586,7 @@ const Utils = () => {
     };
 
     const handleCreateCountry = () => {
-        const url = 'http://localhost:8081/utils/create-country';
+        const url = `${apiUrlMain}/utils/create-country`;
         const payload = {
             ...newCountry
         };
@@ -612,7 +614,7 @@ const Utils = () => {
     };
 
     const handleCreateDepartment = () => {
-        const url = 'http://localhost:8081/utils/create-department';
+        const url = `${apiUrlMain}/utils/create-department`;
         const payload = {
             ...newDepartment
         };
@@ -643,7 +645,7 @@ const Utils = () => {
     };
 
     const handleCreateCity = () => {
-        const url = 'http://localhost:8081/utils/create-city';
+        const url = '${apUrlMain}/utils/create-city';
         const payload = {
             ...newCity
         };
@@ -679,7 +681,7 @@ const Utils = () => {
 
     const handleCreateCancha =()=>{
 
-        const url = 'http://localhost:8081/utils/create-cancha';
+        const url = `${apiUrlMain}/utils/create-cancha`;
         const payload = {
             ...newCancha
         };
@@ -709,7 +711,7 @@ const Utils = () => {
 
     const handleModifyCity = () => {
         const cityId = selectedCity[0] 
-        const url = `http://localhost:8081/utils/edit-country/${cityId}`;
+        const url = `${apiUrlMain}/utils/edit-country/${cityId}`;
         const payload = {
             ...newCity
         };
@@ -744,7 +746,7 @@ const Utils = () => {
 
     const handleModifyCountry = () => {
         const countryId = selectedCountry[0] 
-        const url = `http://localhost:8081/utils/edit-country/${countryId}`;
+        const url = `${apiUrlMain}/utils/edit-country/${countryId}`;
         const payload = {
             ...newCountry
         };
@@ -773,7 +775,7 @@ const Utils = () => {
 
     const handleModifyDepartment = () => {
         const departmentId = selectedDepartments[0] 
-        const url = `http://localhost:8081/utils/edit-department/${departmentId}`;
+        const url = `${apiUrlMain}/utils/edit-department/${departmentId}`;
         const payload = {
             ...newDepartment
         };
@@ -805,7 +807,7 @@ const Utils = () => {
 
     const handleModifyCancha = () => {
         const canchaId = selectedCanchas[0] 
-        const url = `http://localhost:8081/utils/edit-cancha/${canchaId}`;
+        const url = `${apiUrlMain}/utils/edit-cancha/${canchaId}`;
         const payload = {
             ...newCancha
         };
@@ -834,7 +836,7 @@ const Utils = () => {
 
     const handleModifyCategory = () => {
         const categoryId = selectedCategory[0] 
-        const url = `http://localhost:8081/utils/edit-category/${categoryId}`;
+        const url = `${apiUrlMain}/utils/edit-category/${categoryId}`;
         const payload = {
             ...newCategory
         };
@@ -879,7 +881,7 @@ const Utils = () => {
 
             if (confirmDelete) {
                
-                fetch(`http://localhost:8081/utils/delete-country/${countryId}`, {
+                fetch(`${apiUrlMain}/utils/delete-country/${countryId}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json'
@@ -920,7 +922,7 @@ const Utils = () => {
 
             if (confirmDelete) {
                
-                fetch(`http://localhost:8081/utils/delete-city/${cityId}`, {
+                fetch(`${apiUrlMain}}/utils/delete-city/${cityId}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json'
@@ -961,7 +963,7 @@ const Utils = () => {
 
             if (confirmDelete) {
                
-                fetch(`http://localhost:8081/utils/delete-department/${departmentId}`, {
+                fetch(`${apiUrlMain}/utils/delete-department/${departmentId}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json'
@@ -1002,7 +1004,7 @@ const Utils = () => {
 
             if (confirmDelete) {
                
-                fetch(`http://localhost:8081/utils/delete-cancha/${canchaId}`, {
+                fetch(`${apiUrlMain}/utils/delete-cancha/${canchaId}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json'
@@ -1043,7 +1045,7 @@ const Utils = () => {
 
             if (confirmDelete) {
                
-                fetch(`http://localhost:8081/utils/delete-category/${categoryId}`, {
+                fetch(`${apiUrlMain}/utils/delete-category/${categoryId}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json'

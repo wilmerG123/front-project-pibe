@@ -52,6 +52,8 @@ const Coachs = () => {
     });
     const [formMessage, setFormMessage] = useState('');
 
+    const apiUrlMain = process.env.REACT_APP_API_MAIN;
+
     // Handle Search Change
     const handleSearchChange = (e) => setSearchQuery(e.target.value);
 
@@ -116,14 +118,14 @@ const Coachs = () => {
         let url = '';
 
         if (filterType === 'nombre' && searchQuery) {
-            url = `http://localhost:8081/coach/get-by-name/${searchQuery}`;
+            url = `${apiUrlMain}/coach/get-by-name/${searchQuery}`;
         } else if (filterType === 'categoria' && filterCategory) {
             const selectedCategory = categories.find(cat => cat.name === filterCategory);
             if (selectedCategory) {
-                url = `http://localhost:8081/coach/get-by-category-id/${selectedCategory.id}`;
+                url = `${apiUrlMain}/coach/get-by-category-id/${selectedCategory.id}`;
             }
         } else if (filterType === 'todos') {
-            url = 'http://localhost:8081/coach/get-all-coach';
+            url = `${apiUrlMain}/coach/get-all-coach`;
         }
 
         if (url) {
@@ -143,7 +145,7 @@ const Coachs = () => {
 
     useEffect(() => {
         setCategoriesLoading(true);
-        fetch('http://localhost:8081/utils/get-all-categories')
+        fetch(`${apiUrlMain}/utils/get-all-categories`)
             .then(response => response.json())
             .then(data => {
                 setCategories(data);
@@ -209,7 +211,7 @@ const Coachs = () => {
 
             if (confirmDelete) {
                 // Hacer la solicitud DELETE al servidor si el usuario confirma
-                fetch(`http://localhost:8081/coach/delete-coach/${coachId}`, {
+                fetch(`${apiUrlMain}/coach/delete-coach/${coachId}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json'
@@ -240,7 +242,7 @@ const Coachs = () => {
     // Handle Coach Creation
     const handleCreateCoach = () => {
     
-        const url = 'http://localhost:8081/coach/create-coach';
+        const url = `${apiUrlMain}/coach/create-coach`;
         const payload = {
             ...newCoach
         };
@@ -297,7 +299,7 @@ const Coachs = () => {
     // Handle Coach Update
     const handleUpdateCoach = () => {
         const coachId = selectedCoach[0];
-        const url = `http://localhost:8081/coach/edit-coach/${coachId}`;
+        const url = `${apiUrlMain}/coach/edit-coach/${coachId}`;
         const payload = { ...newCoach };
 
         fetch(url, {

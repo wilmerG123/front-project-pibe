@@ -18,6 +18,7 @@ const Pagos = () => {
     const [selectedPago, setSelectedPago] = useState([]);
     const [formMessage, setFormMessage] = useState('');
 
+    const apiUrlObligations = process.env.REACT_APP_API_OBLIGATIONS;
 
     const handleSearchChange = (e) => setSearchQuery(e.target.value);
 
@@ -35,7 +36,7 @@ const Pagos = () => {
         setPagos([])
         let url = '';
         if (filterType === 'nombre' && searchQuery) {
-            url = `http://localhost:8082/pago/get-pagos-by-player-name/${searchQuery}`;
+            url = `${apiUrlObligations}/pago/get-pagos-by-player-name/${searchQuery}`;
         }
         if (url) {
             fetch(url)
@@ -72,7 +73,7 @@ const Pagos = () => {
         try {
 
             // Ahora que tenemos el objeto completo de la obligación, proceder con la solicitud de pago
-            const reciboResponse = await fetch(`http://localhost:8082/pago/get-recibo-pago/${pagoId}`, {
+            const reciboResponse = await fetch(`${apiUrlObligations}/pago/get-recibo-pago/${pagoId}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"
