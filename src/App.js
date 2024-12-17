@@ -60,7 +60,9 @@ const App = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:8080/auth/login', {
+      const apiUrl = process.env.REACT_APP_API_LOGIN;
+      console.log("API URL:", apiUrl);  // Verifica si la URL es correcta
+      const response = await fetch(`${apiUrl}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
