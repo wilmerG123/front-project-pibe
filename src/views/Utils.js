@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import CustomThemeProvider from '../styles/CustomThemeProvider';
 import CategoryTable from './tables/CategoryTable'
 import CanchaTable from './tables/CanchaTable'
@@ -17,17 +17,15 @@ import {
     Button,
     CancelButton,
     FormButtons,
-    FormMessage
 } from '../styles/formularios';
 
-import { FilterOptionNoSelect, SearchContainer, ContainerFilter, Title, SearchBar, FilterContainer, FilterOption, MenuMiddle, MenuButton, NoResultsMessage, LoadingMessage } from './../styles/filters';
+import { FilterOptionNoSelect, ContainerFilter, Title, SearchBar, FilterContainer, FilterOption, MenuMiddle, MenuButton, NoResultsMessage, LoadingMessage } from './../styles/filters';
 
 
 
 const Utils = () => {
 
-    const [searchQuery, setSearchQuery] = useState('');
-    const [filterCategory, setFilterCategory] = useState('');
+    
     const [filterType, setFilterType] = useState('');
     const [categories, setCategories] = useState([]);
     const [citys, setCitys] = useState([]);
@@ -37,14 +35,8 @@ const Utils = () => {
     const [departmentsForm, setDepartmentsform] = useState([]);
     const [countrysForm, setCountrysForm] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [countrySelectForm, setCountrySelectForm] = useState({});
     const [noResults, setNoResults] = useState(false);
-    const [categoriesLoading, setCategoriesLoading] = useState(false);
-    const [citiesLoading, setCitiesLoading] = useState(false);
-    const [showForm, setShowForm] = useState(false);
-    const [showModifyForm, setShowModifyForm] = useState(false);
-    const [selectedPlayer, setSelectedPlayer] = useState([]);
-    const [formMessage, setFormMessage] = useState('');
+    const [ setFormMessage] = useState('');
     const [selectedCanchas, setSelectedCanchas] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState([]);
     const [selectedCity, setSelectedCity] = useState([]);
@@ -645,7 +637,7 @@ const Utils = () => {
     };
 
     const handleCreateCity = () => {
-        const url = '${apUrlMain}/utils/create-city';
+        const url = `${apiUrlMain}/utils/create-city`;
         const payload = {
             ...newCity
         };

@@ -155,7 +155,7 @@ const Coachs = () => {
                 console.error('Error al cargar categorías:', error);
                 setCategoriesLoading(false);
             });
-    }, []);
+    }, [apiUrlMain]);
 
     const handleCreateCoachClick = () => {
         // Limpiar los estados antes de abrir el formulario de creación

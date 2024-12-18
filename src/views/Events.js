@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import EventTable from './tables/EventTable'
 import CustomThemeProvider from '../styles/CustomThemeProvider';
 import { FormOverlay, FormContainer, FormTitle, FormField, Label, Input, Select, Button, CancelButton, FormButtons, FormMessage } from '../styles/formularios';
@@ -281,7 +281,7 @@ const Events = () => {
                 console.error('Error al cargar canchas:', error);
                 setCanchasLoading(false);
             });
-    }, [filterType]);
+    }, [apiUrlMain]);
 
 
     return (
@@ -304,7 +304,7 @@ const Events = () => {
                                 </Select>
                             </FilterOption>
 
-                            {filterType == 'todos' && (
+                            {filterType === 'todos' && (
                                 <FilterOptionNoSelect>
                                     <Button onClick={handleSearch}>Buscar</Button>
                                 </FilterOptionNoSelect>

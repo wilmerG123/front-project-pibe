@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import CustomThemeProvider from '../styles/CustomThemeProvider';
 import PlayerTable from '../views/tables/PlayerTable';
 import {
@@ -11,8 +11,8 @@ import {
     Select,
     Button,
     CancelButton,
-    FormButtons,
-    FormMessage
+    FormButtons
+    
 } from '../styles/formularios';
 
 import { SearchContainer, ContainerFilter, Title, SearchBar, FilterContainer, FilterOption, FilterOptionNoSelect, MenuMiddle, MenuButton, NoResultsMessage, LoadingMessage } from './../styles/filters';
@@ -42,7 +42,7 @@ const Players = () => {
         age: ''
     });
     const [selectedPlayer, setSelectedPlayer] = useState([]);
-    const [formMessage, setFormMessage] = useState('');
+    const [setFormMessage] = useState('');
 
     const apiUrlMain = process.env.REACT_APP_API_MAIN;
     
@@ -148,7 +148,7 @@ const Players = () => {
                 console.error('Error al cargar ciudades:', error);
                 setCitiesLoading(false);
             });
-    }, [filterType]);
+    }, [filterType, apiUrlMain]);
 
 
     const handleCreatePlayerClick = () => {

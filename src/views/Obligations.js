@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import ObligationsTable from './tables/ObligationsTable'
 import CustomThemeProvider from '../styles/CustomThemeProvider';
 import { FormOverlay, FormContainer, FormTitle, FormField, Label, Input, Select, Button, CancelButton, FormButtons, FormMessage } from '../styles/formularios';
@@ -20,7 +20,6 @@ const Obligations = () => {
     const [showCreateForm, setShowCreateForm] = useState(false);
     const [showModifyForm, setShowModifyForm] = useState(false);
     const [formMessage, setFormMessage] = useState('');
-    const [categoriesForm, setCategoriesForm] = useState([]);
     const [newObligation, setNewObligation] = useState({
         name: '',
         description: '',
@@ -334,7 +333,7 @@ const Obligations = () => {
                 console.error('Error al cargar categorías:', error);
                 setCategoriesLoading(false);
             });
-    }, [filterType]);
+    }, [apiUrlObligations]);
 
 
     return (

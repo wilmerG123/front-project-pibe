@@ -1,22 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import PagosTable from './tables/PagosTable'
 import CustomThemeProvider from '../styles/CustomThemeProvider';
-import { FormOverlay, FormContainer, FormTitle, FormField, Label, Input, Select, Button, CancelButton, FormButtons, FormMessage } from '../styles/formularios';
-import { SearchContainer, ContainerFilter, Title, SearchBar, FilterContainer, FilterOption, FilterOptionNoSelect, MenuMiddle, MenuButton, NoResultsMessage, LoadingMessage } from './../styles/filters';
+import { Label, Input, Select, Button } from '../styles/formularios';
+import { SearchContainer, ContainerFilter, Title, SearchBar, FilterContainer, FilterOption, MenuMiddle, MenuButton, NoResultsMessage, LoadingMessage } from './../styles/filters';
 
 
 const Pagos = () => {
 
     const [pagos, setPagos] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [filterCategory, setFilterCategory] = useState('');
+    const [setFilterCategory] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
     const [filterType, setFilterType] = useState('');
     const [noResults, setNoResults] = useState(false);
-    const [categoriesLoading, setCategoriesLoading] = useState(false);
-    const [categories, setCategories] = useState([]);
     const [selectedPago, setSelectedPago] = useState([]);
-    const [formMessage, setFormMessage] = useState('');
 
     const apiUrlObligations = process.env.REACT_APP_API_OBLIGATIONS;
 
