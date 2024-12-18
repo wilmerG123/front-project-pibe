@@ -16,6 +16,9 @@
     "styled-components": "^6.1.13",
     "web-vitals": "^2.1.4"
   },
+  "engines": {
+  "node": "20.x"
+},
   "scripts": {
     "start": "serve -s build",
     "build": "react-scripts build",
