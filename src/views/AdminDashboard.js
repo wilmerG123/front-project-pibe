@@ -90,13 +90,13 @@ const AdminDashboard = () => {
           {/* Menú desplegable */}
           <ToolbarMenu>
             <ul>
-              <li><button onClick={handleShowPlayers}>Jugadores</button></li>
-              <li><button onClick={handleShowTrainers}>Entrenadores</button></li>
-              <li><button onClick={handleShowObligations}>Obligaciones</button></li>
-              <li><button onClick={handleShowEvents}>Eventos</button></li>
-              <li><button onClick={handleShowPagos}>Pagos</button></li>
-              <li><button onClick={null}>Inventario</button></li>
-              <li><button onClick={handleShowUtils}>Varios</button></li>
+            <li><a href="#" onClick={handleShowPlayers}>Jugadores</a></li>
+              <li><a href="#" onClick={handleShowTrainers}>Entrenadores</a></li>
+              <li><a href="#" onClick={handleShowObligations}>Obligaciones</a></li>
+              <li><a href="#" onClick={handleShowEvents}>Eventos</a></li>
+              <li><a href="#" onClick={handleShowPagos}>Pagos</a></li>
+              <li><a href="#" onClick={null}>Inventario</a></li>
+              <li><a href="#" onClick={handleShowUtils}>Varios</a></li>
             </ul>
           </ToolbarMenu>
 
